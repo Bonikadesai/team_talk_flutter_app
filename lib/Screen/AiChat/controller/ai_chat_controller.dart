@@ -7,7 +7,7 @@ class AIChatController extends GetxController {
   var messages = <Map<String, String>>[].obs;
 
   final apiKey = 'AIzaSyA_b8JCgmT0_udKMRjqvusAKYu7J1B0OfA';
-// final apiKey="";
+
   void sendMessage(String message) async {
     messages.add({'role': 'user', 'content': message});
     update();
