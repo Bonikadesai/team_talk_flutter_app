@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "603562369302",
+    "project_id": "team-talk-flutter-app",
+    "storage_bucket": "team-talk-flutter-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603562369302:android:19c41cb9626038f3a27037",
+        "android_client_info": {
+          "package_name": "com.example.team_talk_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603562369302-89pf5spf6g758rnnfolefq50uc1sus1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.team_talk_flutter_app",
+            "certificate_hash": "b8c2f371fe19abba5962864dcc6fe35a09d9c74f"
+          }
+        },
+        {
+          "client_id": "603562369302-pa48au19e2gfedmincaf9304deuetqv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBnv1-Kh0gj7FSBqhhWNIUHDooNusMt-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603562369302-pa48au19e2gfedmincaf9304deuetqv1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "603562369302-k61d0c1hsr3k73neq3oof8ivs02c2b5b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.teamTalkFlutterApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

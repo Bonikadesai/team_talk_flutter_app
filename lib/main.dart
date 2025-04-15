@@ -1,0 +1,55 @@
+import 'package:fcm_config/fcm_config.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:team_talk_flutter_app/firebase_options.dart';
+
+import 'Screen/SplashScreen/splashScreen.dart';
+import 'common/routs.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FCMConfig.instance.init(
+      defaultAndroidForegroundIcon:
+          '@mipmap/ic_launcher', //default is @mipmap/ic_launcher
+      defaultAndroidChannel: AndroidNotificationChannel(
+        'high_importance_channel', // same as value from android setup
+        'Fcm config',
+        importance: Importance.high,
+        sound: RawResourceAndroidNotificationSound('notification'),
+      ),
+      onBackgroundMessage: _firebaseMessagingBackgroundHandler);
+
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await NotificationService().init();
+  runApp(const MyApp());
+}
+
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
+//   print("Background Message: ${message.messageId}");
+// }
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      builder: FToastBuilder(),
+      getPages: routes,
+      themeMode: ThemeMode.dark,
+      title: 'Team Talk',
+      debugShowCheckedModeBanner: false,
+      home: const SplashScreen(),
+    );
+  }
+}
