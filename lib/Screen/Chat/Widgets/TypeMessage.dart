@@ -119,10 +119,8 @@ class TypeMessage extends StatelessWidget {
                       // Null check before using the id
                       if (userModel.id != null) {
                         chatController.sendMessage(
-                          userModel.id!,
-                          messageController.text,
-                          userModel,
-                        );
+                            userModel.id!, messageController.text, userModel,
+                            imagePath: chatController.selectedImagePath.value,context: context);
                         messageController.clear();
                         message.value = "";
                       } else {

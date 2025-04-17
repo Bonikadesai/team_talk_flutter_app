@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -60,16 +62,22 @@ class LoginController extends GetxController {
   }
 
   onTapLogin() async {
-    if (validationLogin()) {
-      AuthHelper.authHelper
-          .login(emailController.text, passwordController.text);
-      String uid = FirebaseAuth.instance.currentUser!.uid;
-      String? token = await FirebaseMessaging.instance.getToken();
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .update({'fcmToken': token});
+    try {
+      if (validationLogin()) {
+        String? token = await FirebaseMessaging.instance.getToken();
+        log("user id :${FirebaseAuth.instance.currentUser?.uid}");
+        AuthHelper.authHelper
+            .login(emailController.text, passwordController.text);
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser?.uid ?? "")
+            .update({'fcmToken': token});
+      }
+    } catch (e) {
+      log("onTapLogin :$e");
     }
+
     //   Map<String, dynamic> res = await Auth_Helper.auth_helper.SignIn(
     //       email: emailController.text, password: passwordController.text);
     //   if (res['user'] != null) {

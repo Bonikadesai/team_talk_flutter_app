@@ -218,6 +218,7 @@
 //     );
 //   }
 // }
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -242,6 +243,8 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("email :${userModel.email}");
+    log("fcmToken :${userModel.fcmToken}");
     ChatController chatController = Get.put(ChatController());
     ProfileController profileController = Get.put(ProfileController());
     CallController callController = Get.put(CallController());

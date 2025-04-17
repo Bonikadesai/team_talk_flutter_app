@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:team_talk_flutter_app/Screen/Chat/push_notificaion/notification_service.dart';
 
 import '../../Chat/model/userModel.dart';
 
@@ -66,12 +68,17 @@ class AuthHelper {
     Get.offAllNamed("/authPage");
   }
 
+  String? fcmToken;
+
+  ChatNotificationServices services = ChatNotificationServices();
+
   Future<void> initUser(String email, String name) async {
+    fcmToken = await services.getDeviceToken();
     var newUser = UserModel(
-      email: email,
-      name: name,
-      id: auth.currentUser!.uid,
-    );
+        email: email,
+        name: name,
+        id: auth.currentUser!.uid,
+        fcmToken: fcmToken);
     print("=================================== ${newUser.toJson()}");
 
     try {

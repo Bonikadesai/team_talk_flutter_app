@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +14,7 @@ class ContactController extends GetxController {
   final db = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
+  TextEditingController searchController = TextEditingController();
   RxList<UserModel> userList = <UserModel>[].obs;
   RxList<ChatRoomModel> chatRoomList = <ChatRoomModel>[].obs;
   void onInit() async {
@@ -36,15 +41,49 @@ class ContactController extends GetxController {
     isLoading.value = false;
   }
 
-  Stream<List<ChatRoomModel>> getChatRoom() {
-    return db
-        .collection('chats')
-        .orderBy("timestamp", descending: true)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
+  var searchQuery = "".obs;
+
+  void updateSearchQuery(String query) {
+    searchQuery.value = query;
+    log('searchQuery.value :${searchQuery.value}');
+  }
+
+  List<ChatRoomModel> myChatRoomList = [];
+  StreamController<List<ChatRoomModel>> chatRoomController =
+      StreamController<List<ChatRoomModel>>.broadcast();
+  getChatRoom(String searchText) {
+    if (searchText.isEmpty) {
+      db
+          .collection('chats')
+          .orderBy("timestamp", descending: true)
+          .snapshots()
+          .listen((snapshot) {
+        myChatRoomList = snapshot.docs
             .map((doc) => ChatRoomModel.fromJson(doc.data()))
             .where((chatRoom) => chatRoom.id!.contains(auth.currentUser!.uid))
-            .toList());
+            .toList();
+        chatRoomController.add(myChatRoomList); // Update stream
+      });
+    } else {
+      db
+          .collection('chats')
+          .orderBy("timestamp", descending: true)
+          .snapshots()
+          .listen((snapshot) {
+        myChatRoomList = snapshot.docs
+            .map((doc) => ChatRoomModel.fromJson(doc.data()))
+            .where((chatRoom) => chatRoom.id!.contains(auth.currentUser!.uid))
+            .where(
+              (element) =>
+                  element.sender?.name
+                      ?.toLowerCase()
+                      .contains(searchText.toLowerCase()) ??
+                  false,
+            )
+            .toList();
+        chatRoomController.add(myChatRoomList); // Update stream
+      });
+    }
   }
 
   Future<void> saveContact(UserModel user) async {

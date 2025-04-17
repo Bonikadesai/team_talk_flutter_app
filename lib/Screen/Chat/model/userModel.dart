@@ -9,23 +9,25 @@ class UserModel {
   String? lastOnlineStatus;
   String? status;
   String? role;
+  String? fcmToken;
 
-  UserModel({
-    this.id,
-    this.name,
-    this.email,
-    this.profileImage,
-    this.phoneNumber,
-    this.about,
-    this.createdAt,
-    this.lastOnlineStatus,
-    this.status,
-    this.role,
-  });
+  UserModel(
+      {this.id,
+      this.name,
+      this.email,
+      this.profileImage,
+      this.phoneNumber,
+      this.about,
+      this.createdAt,
+      this.lastOnlineStatus,
+      this.status,
+      this.role,
+      this.fcmToken});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     name = json["name"];
+    fcmToken = json["fcmToken"];
     email = json["email"];
     profileImage = json["profileImage"];
     phoneNumber = json["phoneNumber"];
@@ -48,6 +50,7 @@ class UserModel {
     _data["LastOnlineStatus"] = lastOnlineStatus;
     _data["Status"] = status;
     _data["role"] = role;
+    _data["fcmToken"] = fcmToken;
     return _data;
   }
 }

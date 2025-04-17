@@ -193,6 +193,7 @@ class SignupScreen extends StatelessWidget {
                             child: CommonBtn(
                                 label: stringRes.signup,
                                 onTap: () async {
+
                                   signupController.onTapSignup();
                                   // User? user =
                                   //   await AuthHelper.authHelper.SignUp(

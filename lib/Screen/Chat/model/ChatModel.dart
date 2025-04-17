@@ -41,6 +41,7 @@ class ChatModel {
     if (json["senderId"] is String) {
       senderId = json["senderId"];
     }
+
     if (json["receiverId"] is String) {
       receiverId = json["receiverId"];
     }
@@ -79,6 +80,7 @@ class ChatModel {
     _data["senderName"] = senderName;
     _data["senderId"] = senderId;
     _data["receiverId"] = receiverId;
+
     _data["timestamp"] = timestamp;
     _data["readStatus"] = readStatus;
     _data["imageUrl"] = imageUrl;

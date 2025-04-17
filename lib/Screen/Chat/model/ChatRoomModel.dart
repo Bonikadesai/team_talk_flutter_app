@@ -13,6 +13,7 @@ class ChatRoomModel {
   String? lastMessageTimestamp;
   String? timestamp;
 
+
   ChatRoomModel(
       {this.id,
       this.sender,

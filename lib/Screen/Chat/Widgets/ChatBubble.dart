@@ -38,6 +38,7 @@ class ChatBubble extends StatelessWidget {
                 borderRadius: isComming
                     ? const BorderRadius.only(
                         topLeft: Radius.circular(10),
+
                         topRight: Radius.circular(10),
                         bottomLeft: Radius.circular(0),
                         bottomRight: Radius.circular(10),
@@ -57,6 +58,8 @@ class ChatBubble extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: CachedNetworkImage(
+                            height: 200,
+                            width: double.infinity,
                             imageUrl: imageUrl,
                             fit: BoxFit.cover,
                             placeholder: (context, url) =>
@@ -93,6 +96,7 @@ class ChatBubble extends StatelessWidget {
                           size: 16,
                           color: status == "read" ? Colors.blue : Colors.grey,
                         ),
+
                         // SvgPicture.asset(
                         //   assetsRes.chatStatusSvg,
                         //   color: status == "read" ? colorRes.blue : Colors.grey,

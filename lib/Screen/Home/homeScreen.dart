@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,8 @@ import 'Widget/ChatsList.dart';
 import 'Widget/TabBar.dart';
 import 'controller/AppConntroller.dart';
 
+ValueNotifier<bool> isShowSearchField = ValueNotifier(false);
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -38,89 +42,99 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     CallController callController = Get.put(CallController());
     AppController appController = Get.put(AppController());
     AuthController authController = Get.put(AuthController());
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: colorRes.blue,
-        foregroundColor: Colors.white,
-        title: const Text(
-          stringRes.appName,
-        ),
-        toolbarHeight: 100,
-        actions: [
-          IconButton(
-            onPressed: () {
-              appController.checkLatestVersion();
-            },
-            icon: Icon(
-              Icons.search,
+
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: colorRes.blue,
+          foregroundColor: Colors.white,
+          title: const Text(stringRes.appName),
+          toolbarHeight: 100,
+          actions: [
+            IconButton(
+              onPressed: () {
+                if (tabController.index == 0) {
+                  isShowSearchField.value = !isShowSearchField.value;
+
+                  log('isShowSearchField :$isShowSearchField');
+                } else {
+                  isShowSearchField.value = false;
+                  contactController.searchController.clear();
+                  tabController.index = 0;
+                }
+                appController.checkLatestVersion();
+              },
+              icon: Icon(
+                Icons.search,
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              Get.to(AiChatScreen());
-            },
-            icon: SvgPicture.asset(
-              "assets/Icons/ai chat.svg",
-              height: 22,
-              width: 22,
+            IconButton(
+              onPressed: () {
+                Get.to(AiChatScreen());
+              },
+              icon: SvgPicture.asset("assets/Icons/ai chat.svg",
+                  height: 22, width: 22),
             ),
-          ),
-          // SvgPicture.asset("assets/Icons/ai chat.svg"),
-          // IconButton(
-          //   onPressed: () {
-          //     showDialog(
-          //       context: context,
-          //       builder: (BuildContext context) {
-          //         return AlertDialog(
-          //             title: const Text("Are You Sure?"),
-          //             content: const Text("Do you want to logout?"),
-          //             actions: [
-          //               ElevatedButton(
-          //                 onPressed: () {
-          //                   AuthHelper.authHelper
-          //                       .logoutUser(); // Sign out the user
-          //                 },
-          //                 child: const Text("Yes"),
-          //               ),
-          //               ElevatedButton(
-          //                 onPressed: () {
-          //                   Get.to(HomeScreen()); // Close the dialog
-          //                 },
-          //                 child: const Text("No"),
-          //               ),
-          //             ]);
-          //       },
-          //     );
-          //   },
-          //   icon: const Icon(Icons.logout),
-          // )
-        ],
-      ),
-      bottomNavigationBar: myTabBar(tabController, context),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed("/contactPage");
-        },
-        foregroundColor: Colors.white,
-        backgroundColor: colorRes.blue,
-        shape: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(30)),
-        child: const Icon(
-          Icons.add,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: TabBarView(
-          controller: tabController,
-          children: [
-            ChatList(),
-            GroupScreen(),
-            CallHistory(),
-            ProfileScreen(),
-            Notification_Screen(),
+            // SvgPicture.asset("assets/Icons/ai chat.svg"),
+            // IconButton(
+            //   onPressed: () {
+            //     showDialog(
+            //       context: context,
+            //       builder: (BuildContext context) {
+            //         return AlertDialog(
+            //             title: const Text("Are You Sure?"),
+            //             content: const Text("Do you want to logout?"),
+            //             actions: [
+            //               ElevatedButton(
+            //                 onPressed: () {
+            //                   AuthHelper.authHelper
+            //                       .logoutUser(); // Sign out the user
+            //                 },
+            //                 child: const Text("Yes"),
+            //               ),
+            //               ElevatedButton(
+            //                 onPressed: () {
+            //                   Get.to(HomeScreen()); // Close the dialog
+            //                 },
+            //                 child: const Text("No"),
+            //               ),
+            //             ]);
+            //       },
+            //     );
+            //   },
+            //   icon: const Icon(Icons.logout),
+            // )
           ],
+        ),
+        bottomNavigationBar: myTabBar(tabController, context),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.toNamed("/contactPage");
+          },
+          foregroundColor: Colors.white,
+          backgroundColor: colorRes.blue,
+          shape: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(30)),
+          child: const Icon(
+            Icons.add,
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: TabBarView(
+            controller: tabController,
+            children: [
+              ChatList(),
+              GroupScreen(),
+              CallHistory(),
+              ProfileScreen(),
+              Notification_Screen(),
+            ],
+          ),
         ),
       ),
     );

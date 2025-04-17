@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,8 +13,27 @@ import '../../../utils/string_res.dart';
 import '../../ForgotPassword/forgotPassword.dart';
 import '../controller/loginController.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  void requestPermission() async {
+    NotificationSettings settings =
+        await _firebaseMessaging.requestPermission();
+    print('User granted permission: ${settings.authorizationStatus}');
+  }
+
+  @override
+  void initState() {
+    requestPermission();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

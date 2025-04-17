@@ -8,8 +8,9 @@ import 'package:team_talk_flutter_app/firebase_options.dart';
 import 'Screen/SplashScreen/splashScreen.dart';
 import 'common/routs.dart';
 
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
+  await Firebase.initializeApp();
 }
 
 Future<void> main() async {
@@ -17,16 +18,17 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FCMConfig.instance.init(
-      defaultAndroidForegroundIcon:
-          '@mipmap/ic_launcher', //default is @mipmap/ic_launcher
-      defaultAndroidChannel: AndroidNotificationChannel(
-        'high_importance_channel', // same as value from android setup
-        'Fcm config',
-        importance: Importance.high,
-        sound: RawResourceAndroidNotificationSound('notification'),
-      ),
-      onBackgroundMessage: _firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // await FCMConfig.instance.init(
+  //     defaultAndroidForegroundIcon:
+  //         '@mipmap/ic_launcher', //default is @mipmap/ic_launcher
+  //     defaultAndroidChannel: AndroidNotificationChannel(
+  //       'high_importance_channel', // same as value from android setup
+  //       'Fcm config',
+  //       importance: Importance.high,
+  //       sound: RawResourceAndroidNotificationSound('notification'),
+  //     ),
+  //     onBackgroundMessage: _firebaseMessagingBackgroundHandler);
 
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // await NotificationService().init();

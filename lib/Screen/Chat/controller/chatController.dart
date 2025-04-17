@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -10,6 +13,7 @@ import '../../ProfileScreen/controller/profileController.dart';
 import '../model/ChatModel.dart';
 import '../model/ChatRoomModel.dart';
 import '../model/userModel.dart';
+import '../push_notificaion/notification_service.dart';
 
 class ChatController extends GetxController {
   final auth = FirebaseAuth.instance;
@@ -106,12 +110,11 @@ class ChatController extends GetxController {
   //   }
   //   isLoading.value = false;
   // }
+  ChatNotificationServices services = ChatNotificationServices();
+
   Future<void> sendMessage(
-    String targetUserId,
-    String message,
-    UserModel targetUser, {
-    String imagePath = '',
-  }) async {
+      String targetUserId, String message, UserModel targetUser,
+      {String imagePath = '', required BuildContext context}) async {
     isLoading.value = true;
     String chatId = uuid.v6();
     String roomId = getRoomId(targetUserId);
@@ -124,11 +127,13 @@ class ChatController extends GetxController {
         getReciver(profileController.currentUser.value, targetUser);
 
     String imageUrl = '';
+    log('targetUser :${targetUser.name}');
 
     try {
       // Upload image if selected
       if (imagePath.isNotEmpty) {
         imageUrl = await profileController.uploadFileToFirebase(imagePath);
+        log("imageUrl :$imageUrl");
         if (imageUrl.isEmpty) {
           throw Exception("Failed to upload image");
         }
@@ -142,9 +147,13 @@ class ChatController extends GetxController {
         receiverId: targetUserId,
         senderName: profileController.currentUser.value.name,
         timestamp: timestamp.toString(),
+        // fcmToken: targetUser.fcmToken ?? "",
         readStatus: "unread",
       );
 
+      log('newChat :${newChat.toJson()}');
+
+      log('message____:$message');
       var roomDetails = ChatRoomModel(
         id: roomId,
         lastMessage: message.isNotEmpty ? message : "Image",
@@ -155,6 +164,7 @@ class ChatController extends GetxController {
         unReadMessNo: targetUserId == auth.currentUser!.uid ? 0 : 1,
       );
 
+      log('roomDetails :${roomDetails.toJson()}');
       // Save message to Firestore
       await db
           .collection("chats")
@@ -168,6 +178,13 @@ class ChatController extends GetxController {
 
       // Update contacts
       await contactController.saveContact(targetUser);
+      try {
+        services.forGroundMessage();
+        services.triggerNotification(context,
+            message: message, user: targetUser);
+      } catch (e) {
+        log("message firebaseInit:$e");
+      }
 
       // Clear inputs
       selectedImagePath.value = "";
