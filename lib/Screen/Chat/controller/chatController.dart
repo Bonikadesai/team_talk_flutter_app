@@ -181,7 +181,7 @@ class ChatController extends GetxController {
       try {
         services.forGroundMessage();
         services.triggerNotification(context,
-            message: message, user: targetUser);
+            message: message, user: targetUser,chatModel:newChat );
       } catch (e) {
         log("message firebaseInit:$e");
       }

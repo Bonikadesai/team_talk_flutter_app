@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../model/ChatModel.dart';
 import '../model/userModel.dart';
 
 class ChatNotificationServices {
@@ -103,11 +104,11 @@ class ChatNotificationServices {
 
 // Function to trigger notification on button press
   void triggerNotification(BuildContext context,
-      {String? message, UserModel? user}) {
+      {String? message, UserModel? user, ChatModel? chatModel}) {
     RemoteMessage mockMessage = RemoteMessage(
       notification: RemoteNotification(
-        title: user?.name,
-        body: message,
+        title: chatModel?.senderName,
+        body: (message?.isNotEmpty ?? false) ? message : "Image",
       ),
       data: {'type': 'test'},
     );

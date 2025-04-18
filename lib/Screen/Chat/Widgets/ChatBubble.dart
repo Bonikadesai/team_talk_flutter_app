@@ -38,7 +38,6 @@ class ChatBubble extends StatelessWidget {
                 borderRadius: isComming
                     ? const BorderRadius.only(
                         topLeft: Radius.circular(10),
-
                         topRight: Radius.circular(10),
                         bottomLeft: Radius.circular(0),
                         bottomRight: Radius.circular(10),
@@ -62,14 +61,18 @@ class ChatBubble extends StatelessWidget {
                             width: double.infinity,
                             imageUrl: imageUrl,
                             fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                            placeholder: (context, url) => Center(
+                                child: const CircularProgressIndicator()),
                             errorWidget: (context, url, error) =>
                                 const Icon(Icons.error),
                           ),
                         ),
-                        message == "" ? Container() : SizedBox(height: 100),
-                        message == "" ? Container() : Text(message),
+                        message == ""
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: Text(message),
+                              ),
                       ],
                     )),
           const SizedBox(height: 10),

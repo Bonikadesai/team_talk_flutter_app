@@ -98,7 +98,7 @@ class _ChatListState extends State<ChatList> {
               stream: contactController.chatRoomController.stream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
