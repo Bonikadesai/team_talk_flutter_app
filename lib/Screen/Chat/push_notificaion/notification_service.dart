@@ -1,71 +1,20 @@
-import 'dart:io';
+import 'dart:convert';
 import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:team_talk_flutter_app/Screen/Chat/model/ChatRoomModel.dart';
 
 import '../model/ChatModel.dart';
 import '../model/userModel.dart';
+
+import 'package:http/http.dart' as http;
 
 class ChatNotificationServices {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
-  requestNotification() async {
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      print('User granted provisional permission');
-    } else {
-      print('User declined or has not accepted permission');
-    }
-  }
-
-  initLocalNotification(BuildContext context, RemoteMessage message) async {
-    var androidInitializationSettings =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    var iosInitializationSettings = const DarwinInitializationSettings();
-    var initializationSettings = InitializationSettings(
-        android: androidInitializationSettings, iOS: iosInitializationSettings);
-
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: (payload) {
-        print("payload");
-      },
-    );
-  }
-
-  void firebaseInit(BuildContext context) {
-    print("call firebaseInit");
-    FirebaseMessaging.onMessage.listen((event) {
-      if (kDebugMode) {
-        print(event.notification?.title);
-        print(event.data["type"]);
-      }
-      if (Platform.isIOS) {
-        forGroundMessage();
-      }
-      if (Platform.isAndroid) {
-        initLocalNotification(context, event);
-        showNotification(event);
-      }
-    });
-  }
 
   Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -103,8 +52,24 @@ class ChatNotificationServices {
   }
 
 // Function to trigger notification on button press
-  void triggerNotification(BuildContext context,
-      {String? message, UserModel? user, ChatModel? chatModel}) {
+  Future<void> triggerNotification(BuildContext context,
+      {String? message,
+      UserModel? user,
+      ChatModel? chatModel,
+      ChatRoomModel? roomDetails}) async {
+    print('chatModel :$chatModel');
+    print('roomDetails :$roomDetails');
+    // await sendNotificationByToken(
+    //     "f6VUtS41T6GVjvypemarU2:APA91bFXuvIP1t3afaqvM_xV3grdqruYgVj0gD9_zYEG5wawkxYBCIZfOmQmDnNBhOmZBkfn9DPdfnrn4dDNftiL0FjXfMLCt13R-TK7i3tS3TjTZwyz_rY",
+    //     (chatModel?.senderName ?? ""),
+    //     (message?.isNotEmpty ?? false) ? message ?? "Image" : "Image");
+
+    // await sendNotificationByToken();
+    // Listen for foreground messages
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   print("Received a message: ${message.notification?.title}");
+    //   // Show notification or handle logic here
+    // });
     RemoteMessage mockMessage = RemoteMessage(
       notification: RemoteNotification(
         title: chatModel?.senderName,
@@ -113,6 +78,12 @@ class ChatNotificationServices {
       data: {'type': 'test'},
     );
     showNotification(mockMessage);
+
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   print("Received a message: ${message.notification?.title}");
+    //   showNotification(message);
+    //   // Show notification or handle logic here
+    // });
   }
 
   Future<String> getDeviceToken() async {
@@ -120,16 +91,30 @@ class ChatNotificationServices {
     return token!;
   }
 
-  Future forGroundMessage() async {
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-            alert: true, badge: true, sound: true);
-  }
+  Future<void> sendNotificationByToken(
+      String token, String title, String body) async {
+    final url = Uri.parse(
+        'https://fcm.googleapis.com/v1/projects/team-talk-flutter-app/messages:send');
 
-  isRefreshToken() {
-    messaging.onTokenRefresh.listen((event) {
-      print("refresh");
-      event.toString();
+    final headers = {
+      'Content-Type': 'application/json',
+      // 'Authorization': 'key=$serverKey',
+    };
+
+    final bodyData = json.encode({
+      "message": {
+        "token": token,
+        "notification": {"body": title, "title": body}
+      }
     });
+
+    final response = await http.post(url, headers: headers, body: bodyData);
+
+    if (response.statusCode == 200) {
+      print("Notification sent successfully!");
+    } else {
+      print(
+          "Failed to send notification. Response code: ${response.statusCode}");
+    }
   }
 }

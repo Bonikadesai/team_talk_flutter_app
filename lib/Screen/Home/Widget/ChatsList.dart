@@ -42,9 +42,9 @@ class _ChatListState extends State<ChatList> {
     // service.firebaseInit(context);
     // service.isRefreshToken();
 
-    service.getDeviceToken().then((value) {
-      print("token:$value");
-    });
+    // service.getDeviceToken().then((value) {
+    //   print("token:$value");
+    // });
   }
 
   @override

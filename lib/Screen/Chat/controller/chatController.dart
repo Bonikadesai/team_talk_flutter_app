@@ -179,9 +179,9 @@ class ChatController extends GetxController {
       // Update contacts
       await contactController.saveContact(targetUser);
       try {
-        services.forGroundMessage();
+        // services.forGroundMessage();
         services.triggerNotification(context,
-            message: message, user: targetUser,chatModel:newChat );
+            message: message, user: targetUser, chatModel: newChat,roomDetails: roomDetails);
       } catch (e) {
         log("message firebaseInit:$e");
       }

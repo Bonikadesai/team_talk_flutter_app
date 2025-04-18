@@ -13,6 +13,26 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
+void _initializeFCM() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  await messaging.requestPermission();
+
+  // Get the FCM token
+  String? token = await messaging.getToken();
+  print("FCM Token: $token");
+
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print("Received a message: ${message.notification?.title}");
+    // Show notification or handle logic here
+  });
+
+  // Handle when app is in background or terminated
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print("Opened from background: ${message.notification?.title}");
+  });
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -32,6 +52,7 @@ Future<void> main() async {
 
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // await NotificationService().init();
+  // _initializeFCM();
   runApp(const MyApp());
 }
 

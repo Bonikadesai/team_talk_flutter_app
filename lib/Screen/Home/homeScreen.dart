@@ -71,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Icons.search,
               ),
             ),
+
             IconButton(
               onPressed: () {
                 Get.to(AiChatScreen());
@@ -78,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               icon: SvgPicture.asset("assets/Icons/ai chat.svg",
                   height: 22, width: 22),
             ),
+
             // SvgPicture.asset("assets/Icons/ai chat.svg"),
             // IconButton(
             //   onPressed: () {
