@@ -1,13 +1,10 @@
 import 'dart:developer';
 
-import 'package:fcm_config/fcm_config.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:team_talk_flutter_app/Screen/Home/homeScreen.dart';
 import 'package:team_talk_flutter_app/utils/color_res.dart';
 
-import '../../../common/notification.dart';
 import '../../../utils/assets_res.dart';
 import '../../Chat/chatScreen.dart';
 import '../../Chat/controller/chatController.dart';
@@ -38,7 +35,6 @@ class _ChatListState extends State<ChatList> {
 
   ChatNotificationServices service = ChatNotificationServices();
   notificationCalling() async {
-
     // service.firebaseInit(context);
     // service.isRefreshToken();
 
@@ -177,7 +173,14 @@ class _ChatListState extends State<ChatList> {
                           // Build your UI with the chatRoom
                         },
                       )
-                    : Center(child: Text("No Data Found"));
+                    : Center(
+                        child: Text(
+                        "Start a new conversation",
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: colorRes.grey),
+                      ));
               },
 
               // StreamBuilder<List<ChatRoomModel>>(

@@ -64,18 +64,18 @@ class ProfileScreen extends StatelessWidget {
                                         print("Image Picked" + imagePath.value);
                                       },
                                       child: Container(
-                                        height: 200,
-                                        width: 200,
+                                        height: 150,
+                                        width: 150,
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .background,
+                                          color: colorRes.blue,
                                           borderRadius:
                                               BorderRadius.circular(100),
                                         ),
                                         child: imagePath.value == ""
                                             ? Icon(
                                                 Icons.add,
+                                                color: Colors.white,
+                                                size: 30,
                                               )
                                             : ClipRRect(
                                                 borderRadius:
@@ -88,8 +88,8 @@ class ProfileScreen extends StatelessWidget {
                                       ),
                                     )
                                   : Container(
-                                      height: 200,
-                                      width: 200,
+                                      height: 150,
+                                      width: 150,
                                       decoration: BoxDecoration(
                                         color: colorRes.blue,
                                         borderRadius:
@@ -104,6 +104,7 @@ class ProfileScreen extends StatelessWidget {
                                           ? Icon(
                                               Icons.image,
                                               color: Colors.white,
+                                              size: 40,
                                             )
                                           : ClipRRect(
                                               borderRadius:

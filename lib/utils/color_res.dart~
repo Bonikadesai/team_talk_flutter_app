@@ -5,5 +5,5 @@ class colorRes {
   static const lightGrey = Color(0xffA9B2BA);
   static const grey = Color(0xff858585);
   static const black = Color(0xff171719);
-  static const borderColor = Color(0xffEEEEEE);
+  static const borderColor = Color(0xff171719);
 }

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:team_talk_flutter_app/Screen/CallScreen/audioCallScreen.dart';
+import 'package:team_talk_flutter_app/Screen/CallScreen/videoCallScreen.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../Chat/model/userModel.dart';
@@ -36,17 +38,17 @@ class CallController extends GetxController {
       isDismissible: false,
       icon: Icon(Icons.call),
       onTap: (snack) {
-        Get.back();
-        // Get.to(
-        //   // AudioCallScreen(
-        //   //   target: UserModel(
-        //   //     id: callData.callerUid,
-        //   //     name: callData.callerName,
-        //   //     email: callData.callerEmail,
-        //   //     profileImage: callData.callerPic,
-        //   //   ),
-        //   // ),
-        // );
+        // Get.back();
+        Get.to(
+          AudioCallScreen(
+            target: UserModel(
+              id: callData.callerUid,
+              name: callData.callerName,
+              email: callData.callerEmail,
+              profileImage: callData.callerPic,
+            ),
+          ),
+        );
       },
       callData.callerName!,
       "Incoming Audio Call",
@@ -138,17 +140,17 @@ class CallController extends GetxController {
       isDismissible: false,
       icon: Icon(Icons.video_call),
       onTap: (snack) {
-        Get.back();
-        // Get.to(
-        //   // VideoCallScreen(
-        //   //   target: UserModel(
-        //   //     id: callData.callerUid,
-        //   //     name: callData.callerName,
-        //   //     email: callData.callerEmail,
-        //   //     profileImage: callData.callerPic,
-        //   //   ),
-        //   // ),
-        // );
+        // Get.back();
+        Get.to(
+          VideoCallScreen(
+            target: UserModel(
+              id: callData.callerUid,
+              name: callData.callerName,
+              email: callData.callerEmail,
+              profileImage: callData.callerPic,
+            ),
+          ),
+        );
       },
       callData.callerName!,
       "Incoming Video Call",

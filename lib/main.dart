@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:team_talk_flutter_app/firebase_options.dart';
+import 'package:team_talk_flutter_app/utils/string_res.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import 'Screen/SplashScreen/splashScreen.dart';
 import 'common/routs.dart';
@@ -35,6 +37,9 @@ void _initializeFCM() async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ZegoUIKit().init(
+    appID: ZegoCloudConfig.appId,
+  );
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

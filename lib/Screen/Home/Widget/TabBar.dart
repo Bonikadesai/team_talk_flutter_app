@@ -39,10 +39,6 @@ myTabBar(TabController tabController, BuildContext context) {
           icon: Icon(Icons.person),
           text: "Profile",
         ),
-        Tab(
-          icon: Icon(Icons.notification_add),
-          text: "Notification",
-        ),
       ],
     ),
   );

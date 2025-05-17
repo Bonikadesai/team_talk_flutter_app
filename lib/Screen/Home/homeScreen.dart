@@ -1,10 +1,11 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:team_talk_flutter_app/Screen/AiChat/ai_chat_screen.dart';
-import 'package:team_talk_flutter_app/Screen/Notifications/notification.dart';
+import 'package:team_talk_flutter_app/Screen/Auth/Widgets/loginScreen.dart';
 
 import '../../utils/color_res.dart';
 import '../../utils/string_res.dart';
@@ -33,7 +34,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    TabController tabController = TabController(length: 5, vsync: this);
+    TabController tabController = TabController(length: 4, vsync: this);
     ProfileController profileController = Get.put(ProfileController());
     ContactController contactController = Get.put(ContactController());
     ImagePickerController imagePickerController =
@@ -81,34 +82,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
 
             // SvgPicture.asset("assets/Icons/ai chat.svg"),
-            // IconButton(
-            //   onPressed: () {
-            //     showDialog(
-            //       context: context,
-            //       builder: (BuildContext context) {
-            //         return AlertDialog(
-            //             title: const Text("Are You Sure?"),
-            //             content: const Text("Do you want to logout?"),
-            //             actions: [
-            //               ElevatedButton(
-            //                 onPressed: () {
-            //                   AuthHelper.authHelper
-            //                       .logoutUser(); // Sign out the user
-            //                 },
-            //                 child: const Text("Yes"),
-            //               ),
-            //               ElevatedButton(
-            //                 onPressed: () {
-            //                   Get.to(HomeScreen()); // Close the dialog
-            //                 },
-            //                 child: const Text("No"),
-            //               ),
-            //             ]);
-            //       },
-            //     );
-            //   },
-            //   icon: const Icon(Icons.logout),
-            // )
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Are You Sure?"),
+                      content: const Text("Do you want to logout?"),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance
+                                .signOut(); // 🔐 Firebase Logout
+                            Get.offAll(
+                                LoginScreen()); // Navigate to login screen
+                          },
+                          child: const Text("Yes"),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.back(); // ❌ Just close the dialog
+                          },
+                          child: const Text("No"),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.logout),
+            )
           ],
         ),
         bottomNavigationBar: myTabBar(tabController, context),
@@ -134,7 +138,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               GroupScreen(),
               CallHistory(),
               ProfileScreen(),
-              Notification_Screen(),
             ],
           ),
         ),

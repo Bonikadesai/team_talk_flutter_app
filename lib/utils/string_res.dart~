@@ -23,5 +23,5 @@ class stringRes {
 class ZegoCloudConfig {
   static const appId = 1973667715;
   static const appSign =
-      "67148ff1083e28c992a9e004ba80d59e0f2d9eb20226525c6ee87375c4e50116";
+      "ec8c7b408124cf15d9545283a3736651e948beb056e74e109d250840ee06b1ea";
 }

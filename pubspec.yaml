@@ -57,6 +57,7 @@ dependencies:
   chat_gpt_sdk:
   dash_chat_2: ^0.0.21
   fcm_config:
+  zego_uikit_prebuilt_call:
 
 
 

@@ -120,7 +120,8 @@ class TypeMessage extends StatelessWidget {
                       if (userModel.id != null) {
                         chatController.sendMessage(
                             userModel.id!, messageController.text, userModel,
-                            imagePath: chatController.selectedImagePath.value,context: context);
+                            imagePath: chatController.selectedImagePath.value,
+                            context: context);
                         messageController.clear();
                         message.value = "";
                       } else {
@@ -158,17 +159,17 @@ class TypeMessage extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 8),
-        FloatingActionButton(
-          backgroundColor: colorRes.blue,
-          foregroundColor: Colors.white,
-          onPressed: () {},
-          shape: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: const Icon(Icons.keyboard_voice_rounded),
-        ),
+        //const SizedBox(width: 8),
+        // FloatingActionButton(
+        //   backgroundColor: colorRes.blue,
+        //   foregroundColor: Colors.white,
+        //   onPressed: () {},
+        //   shape: OutlineInputBorder(
+        //     borderSide: BorderSide.none,
+        //     borderRadius: BorderRadius.circular(30),
+        //   ),
+        //   child: const Icon(Icons.keyboard_voice_rounded),
+        // ),
       ],
     );
   }

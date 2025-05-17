@@ -24,6 +24,8 @@ class ChatController extends GetxController {
   @override
   ProfileController profileController = Get.put(ProfileController());
   ContactController contactController = Get.put(ContactController());
+  ChatNotificationServices services = ChatNotificationServices();
+
   String getRoomId(String targetUserId) {
     String currentUserId = auth.currentUser!.uid;
     if (currentUserId[0].codeUnitAt(0) > targetUserId[0].codeUnitAt(0)) {
@@ -110,7 +112,6 @@ class ChatController extends GetxController {
   //   }
   //   isLoading.value = false;
   // }
-  ChatNotificationServices services = ChatNotificationServices();
 
   Future<void> sendMessage(
       String targetUserId, String message, UserModel targetUser,
@@ -181,7 +182,10 @@ class ChatController extends GetxController {
       try {
         // services.forGroundMessage();
         services.triggerNotification(context,
-            message: message, user: targetUser, chatModel: newChat,roomDetails: roomDetails);
+            message: message,
+            user: targetUser,
+            chatModel: newChat,
+            roomDetails: roomDetails);
       } catch (e) {
         log("message firebaseInit:$e");
       }

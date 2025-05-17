@@ -225,6 +225,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:team_talk_flutter_app/Screen/CallScreen/audioCallScreen.dart';
+import 'package:team_talk_flutter_app/Screen/CallScreen/videoCallScreen.dart';
 
 import '../../common/text_style.dart';
 import '../../utils/assets_res.dart';
@@ -315,15 +317,19 @@ class ChatPage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
+              Get.to(AudioCallScreen(target: userModel));
               callController.callAction(
                   userModel, profileController.currentUser.value, "audio");
+              log("==============Voice call on tap================");
             },
             icon: Icon(Icons.phone),
           ),
           IconButton(
             onPressed: () {
+              Get.to(VideoCallScreen(target: userModel));
               callController.callAction(
                   userModel, profileController.currentUser.value, "video");
+              log("==============Video call on tap================");
             },
             icon: Icon(Icons.video_call),
           )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../utils/color_res.dart';
 
@@ -8,7 +9,7 @@ class CommonTextField extends StatelessWidget {
   final int? maxLines;
   final String? hintText;
   final TextStyle? hintStyle;
-  final Widget prefixIcon;
+  final Widget? prefixIcon;
   final Widget? prefix;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
@@ -21,7 +22,7 @@ class CommonTextField extends StatelessWidget {
     this.controller,
     this.onChange,
     this.hintText,
-    required this.prefixIcon,
+    this.prefixIcon,
     this.suffixIcon,
     this.hintStyle,
     this.prefix,
@@ -41,18 +42,18 @@ class CommonTextField extends StatelessWidget {
       decoration: InputDecoration(
         focusedBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          borderSide: BorderSide(width: 2, color: colorRes.blue),
+          borderSide: BorderSide(width: 2, color: colorRes.borderColor),
         ),
         enabledBorder: const OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          borderSide: BorderSide(width: 2, color: colorRes.grey),
+          borderSide: BorderSide(width: 2, color: colorRes.borderColor),
         ),
         errorBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
             borderSide: BorderSide(width: 1, color: Colors.red)),
         prefix: prefix,
         hintText: hintText,
-        hintStyle: hintStyle,
+        hintStyle: TextStyle(color: colorRes.lightGrey),
         border: OutlineInputBorder(
           borderSide: const BorderSide(color: colorRes.grey),
           borderRadius: BorderRadius.circular(
@@ -106,32 +107,33 @@ class PasswordField extends StatelessWidget {
         decoration: InputDecoration(
           focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(width: 2, color: colorRes.blue),
+            borderSide: BorderSide(width: 2, color: colorRes.borderColor),
           ),
           enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            borderSide: BorderSide(width: 2, color: colorRes.grey),
+            borderSide: BorderSide(width: 2, color: colorRes.borderColor),
           ),
           errorBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(width: 1, color: Colors.red)),
           hintText: hintText,
+          hintStyle: TextStyle(color: colorRes.lightGrey),
           border: OutlineInputBorder(
             borderSide: const BorderSide(color: colorRes.grey),
             borderRadius: BorderRadius.circular(
               10,
             ),
           ),
-          prefixIcon: isprefix
-              ? IconButton(
-                  iconSize: 18,
-                  icon: const Icon(
-                    Icons.lock_open,
-                    color: colorRes.grey,
-                  ),
-                  onPressed: () {},
-                )
-              : const SizedBox(),
+          // prefixIcon: isprefix
+          //     ? IconButton(
+          //         iconSize: 18,
+          //         icon: const Icon(
+          //           Icons.lock_open,
+          //           color: colorRes.grey,
+          //         ),
+          //         onPressed: () {},
+          //       )
+          //     : const SizedBox(),
           suffixIcon: issufix
               ? IconButton(
                   color: colorRes.blue,
@@ -139,14 +141,8 @@ class PasswordField extends StatelessWidget {
                   onPressed: () =>
                       _visiblePassword.value = !_visiblePassword.value,
                   icon: value
-                      ? const Icon(
-                          Icons.visibility_off,
-                          color: colorRes.grey,
-                        )
-                      : const Icon(
-                          Icons.visibility_rounded,
-                          color: colorRes.blue,
-                        ),
+                      ? SvgPicture.asset("assets/Icons/eye 2.svg")
+                      : SvgPicture.asset("assets/Icons/eye 1.svg"),
                 )
               : const SizedBox(),
         ),

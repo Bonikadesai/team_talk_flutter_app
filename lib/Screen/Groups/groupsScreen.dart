@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:team_talk_flutter_app/utils/color_res.dart';
 
 import '../../utils/assets_res.dart';
 import '../GroupChat/controller/groupController.dart';
@@ -23,24 +24,33 @@ class GroupScreen extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         }
         List<GroupModel>? groups = snapshot.data;
-        return ListView.builder(
-          itemCount: groups!.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Get.to(GroupChatPage(groupModel: groups[index]));
-              },
-              child: ChatTile(
-                name: groups[index].name!,
-                imageUrl: groups[index].profileUrl == ""
-                    ? assetsRes.defaultProfileUrl
-                    : groups[index].profileUrl!,
-                lastChat: "Group Created",
-                lastTime: "Just Now",
-              ),
-            );
-          },
-        );
+        return groups == null || groups.isEmpty
+            ? Center(
+                child: Text(
+                "Create a new group to start chatting",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: colorRes.grey),
+              ))
+            : ListView.builder(
+                itemCount: groups!.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Get.to(GroupChatPage(groupModel: groups[index]));
+                    },
+                    child: ChatTile(
+                      name: groups[index].name!,
+                      imageUrl: groups[index].profileUrl == ""
+                          ? assetsRes.defaultProfileUrl
+                          : groups[index].profileUrl!,
+                      lastChat: "Group Created",
+                      lastTime: "Just Now",
+                    ),
+                  );
+                },
+              );
       },
     );
   }
