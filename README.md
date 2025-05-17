@@ -1,4 +1,4 @@
-# team_talk_flutter_app
+# TeamTalk App
 
 Project Definition: TeamTalk App (Real time collaboration tool)
 
